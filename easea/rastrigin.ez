@@ -1,0 +1,106 @@
+\User declarations :
+#define SIZE $PROBLEM_SIZE
+
+#define X_MIN -5.12
+#define X_MAX 5.12
+#define PI 3.141592654
+
+float geneMutationProbability=0.001;
+\end
+
+\User functions:
+#include <math.h>
+
+__host__ __device__ inline float Rastrigin(float x[SIZE]) {
+	float result = 0.;
+	for (int i = 0; i < SIZE; i++) {
+    result += ((x[i] * x[i]) - 10 * cos(2 * PI * x[i]));
+  }
+	return (10. * SIZE + result);
+}
+\end
+
+\Before everything else function:
+\end
+
+\After everything else function:
+\end
+
+\At the beginning of each generation function:
+\end
+
+\At the end of each generation function:
+\end
+
+\At each generation before reduce function:
+\end
+
+\User classes:
+GenomeClass {
+  float x[SIZE];
+}
+\end
+
+\GenomeClass::display:
+\end
+
+\GenomeClass::initialiser:
+  for(int i = 0; i < SIZE; i++) {
+    Genome.x[i] = (float) random(X_MIN, X_MAX);
+	}
+\end
+
+\GenomeClass::crossover:
+  for (int i = 0; i < SIZE; i++) {
+    if (tossCoin(0.5)) {
+      child.x[i] = parent2.x[i];
+    }
+  }
+\end
+
+\GenomeClass::mutator:
+  for (int i = 0; i < SIZE; i++) {
+    if (tossCoin(geneMutationProbability)) {
+      Genome.x[i] = (float) random(X_MIN, X_MAX);
+    }
+  }
+\end
+
+\GenomeClass::evaluator:
+  return Rastrigin(Genome.x);
+\end
+
+\User Makefile options:
+\end
+
+\Default run parameters:
+  Number of generations: 1000
+  Time limit: 0 // 0 to disable
+  Population size: 100
+  Offspring size: 100
+  Mutation probability: 1
+  Crossover probability: 1
+  Evaluator goal: minimise
+  Selection operator: Tournament 2
+  Surviving parents: 0
+  Surviving offspring: 100%
+  Reduce parents operator: Tournament 2
+  Reduce offspring operator: Tournament 2
+  Final reduce operator: Tournament 2
+
+  Elitism: Strong
+  Elite: 0
+  Print stats: false
+  Generate csv stats file: false
+  Generate gnuplot script: false
+  Generate R script: false
+  Plot stats: false
+
+  Remote island model: false
+  IP file: ip.txt
+  Server port: 2929
+  Migration probability: 0.3
+
+  Save population: false
+  Start from file: false
+\end

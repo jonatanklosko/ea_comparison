@@ -13,3 +13,4 @@ The tested frameworks include:
   * [Meow](https://github.com/jonatanklosko/meow)
   * [DEAP](https://github.com/DEAP/deap)
   * [LEAP](https://github.com/AureumChaos/LEAP)
+  * [EASEA](https://github.com/EASEA/easea)

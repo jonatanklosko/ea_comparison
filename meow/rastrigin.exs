@@ -4,14 +4,21 @@ Mix.install([
   {:exla, "~> 0.1.0-dev", github: "elixir-nx/nx", sparse: "exla", ref: "d2f717e"}
 ])
 
-Nx.Defn.global_default_options(compiler: EXLA)
-
-if length(System.argv()) != 3 do
-  IO.puts("Usage: elixir rastrigin.exs [population_size] [problem_size] [generations]")
+if length(System.argv()) != 4 do
+  IO.puts("Usage: elixir rastrigin.exs cpu|cuda [population_size] [problem_size] [generations]")
   System.halt(1)
 end
 
-[population_size, problem_size, generations] = Enum.map(System.argv(), &String.to_integer/1)
+[mode | prameters] = System.argv()
+[population_size, problem_size, generations] = Enum.map(prameters, &String.to_integer/1)
+
+defn_opts =
+  case mode do
+    "cpu" -> [compiler: EXLA]
+    "cuda" -> [compiler: EXLA, client: :cuda, run_options: [keep_on_device: true]]
+  end
+
+Nx.Defn.global_default_options(defn_opts)
 
 defmodule Problem do
   import Nx.Defn
